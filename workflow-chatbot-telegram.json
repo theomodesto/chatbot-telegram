@@ -13,6 +13,10 @@
             {
               "value1": "={{ $json.error }}",
               "operation": "isEmpty"
+            },
+            {
+              "value1": "={{ $json.country }}",
+              "value2": "BR"
             }
           ]
         }
@@ -310,7 +314,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "c5d4b435-dfc3-4c3d-87d3-6bce894cb990",
+  "versionId": "50d92ddd-c99e-444b-971b-cf357d1e807b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "16f674bf5d133e8bf1a86676719df44a64b8277f15bf5667eeb9dbc9bc95b2a1"
