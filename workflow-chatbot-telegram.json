@@ -6,48 +6,43 @@
         "conditions": {
           "string": [
             {
-              "value1": "={{ $json.statusCode }}",
-              "operation": "notEqual",
+              "value1": "={{ $json.statusCode.toString() }}",
               "value2": "200"
             },
             {
-              "value1": "={{ $json.error }}",
-              "operation": "isEmpty"
-            },
-            {
-              "value1": "={{ $json.country }}",
-              "value2": "BR"
+              "value1": "={{ $json.city }}",
+              "operation": "isNotEmpty"
             }
           ]
         }
       },
-      "id": "cc53be0e-5dd9-4a1f-8feb-71a27b7d5875",
+      "id": "4f962282-7dbf-4ac5-8517-57b25fd4101a",
       "name": "Check Status",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        -720,
-        64
+        -224,
+        96
       ]
     },
     {
       "parameters": {
-        "chatId": "={{ $('Telegram Trigger - FTR BR Weather Bot').item.json.message.from.id }}",
+        "chatId": "={{ $('Telegram Trigger - FTR BR Weather Bot').item.json.message.chat.id }}",
         "text": "={{ $json?.content?.parts[0]?.text || $('Code in JavaScript').item.json.fallback_message }}",
         "additionalFields": {}
       },
-      "id": "81e9534a-fd7f-44a1-a929-3bf3ee820f60",
+      "id": "50c10adf-128c-4317-b2e1-5445370bcccb",
       "name": "Send Weather",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1,
       "position": [
-        -144,
-        -32
+        352,
+        0
       ],
       "webhookId": "421515f8-0c94-4d57-a963-582ef93644e8",
       "credentials": {
         "telegramApi": {
-          "id": "mHCLpPrqo4seRWb1",
+          "id": "ata3q3vwTfGAuFuP",
           "name": "Telegram account"
         }
       }
@@ -58,40 +53,25 @@
         "text": "❌ Cidade não encontrada. Use o formato Cidade,UF (ex.: São Paulo,SP).",
         "additionalFields": {}
       },
-      "id": "2cd781e2-fb06-4f28-8c9f-05b9adea673a",
+      "id": "f1a95835-b91b-4183-8344-6accd24cd9d5",
       "name": "Send Error",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1,
       "position": [
-        -432,
-        160
+        64,
+        192
       ],
       "webhookId": "08b5d37d-446e-4d27-a89c-2080da436eee",
       "credentials": {
         "telegramApi": {
-          "id": "mHCLpPrqo4seRWb1",
+          "id": "ata3q3vwTfGAuFuP",
           "name": "Telegram account"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "// Acessa o primeiro item do array\nconst weatherData = $input.first().json;\n\n// Extrai os dados necessários\nconst cityName = weatherData?.name;\nconst temperature = weatherData?.main?.temp;\nconst description = weatherData?.weather?.[0]?.description;\nconst statusCode = weatherData?.cod;\nconst country = weatherData?.sys?.country;\nconst feelsLike = weatherData?.main?.feels_like;\nconst windSpeed = weatherData?.wind?.speed;\nconst humidity = weatherData?.main?.humidity;\n\n// Arredonda temperaturas\nconst tempRounded = Math.round(temperature);\nconst feelsRounded = Math.round(feelsLike);\n\n// Emoji baseado na condição\nlet emoji = \"🌡️\";\nif (description?.includes(\"chuva\") || description?.includes(\"chuvisco\")) emoji = \"🌧️\";\nelse if (description?.includes(\"nublado\") || description?.includes(\"nuvens\")) emoji = \"☁️\";\nelse if (description?.includes(\"limpo\") || description?.includes(\"céu\")) emoji = \"☀️\";\nelse if (description?.includes(\"neve\")) emoji = \"❄️\";\nelse if (description?.includes(\"trovoada\")) emoji = \"⛈️\";\n\n// Mensagem fallback completa (substitui o Gemini quando não houver credenciais)\nconst fallbackMessage = `${emoji} Clima em ${cityName} (${country})\\n🌡️ Temperatura: ${tempRounded}°C\\n🤗 Sensação: ${feelsRounded}°C\\n💧 Humidade: ${humidity}%\\n💨 Vento: ${windSpeed} m/s\\n${emoji} ${description}`;\n\nconst error = $input.first().json?.error?.description\n\nreturn {\n  json: {\n    city: cityName,\n    country: country,\n    temperature: temperature,\n    temperatureRounded: tempRounded,\n    feelsLike: feelsLike,\n    windSpeed: windSpeed,\n    humidity: humidity,\n    description: description,\n    fallback_message: fallbackMessage,\n    statusCode: statusCode,\n    error: error\n  },\n};"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -944,
-        64
-      ],
-      "id": "05f717e8-4695-40f4-82ec-7a29826b17e3",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
         "url": "https://api.openweathermap.org/data/2.5/weather",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "openWeatherMapApi",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
@@ -100,12 +80,16 @@
               "value": "={{ $json.queue }}"
             },
             {
-              "name": "lang",
-              "value": "pt_BR"
-            },
-            {
               "name": "units",
               "value": "metric"
+            },
+            {
+              "name": "lang",
+              "value": "pt_br"
+            },
+            {
+              "name": "appid",
+              "value": "={{ $env.OPENWEATHER_API_KEY }}"
             }
           ]
         },
@@ -114,24 +98,14 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -1168,
-        64
+        -672,
+        96
       ],
-      "id": "c358cd12-9ff3-4b84-bdb2-419f2666b413",
+      "id": "645e1783-443b-471d-9884-3520fdcbb29a",
       "name": "OpenWeatherMap",
-      "retryOnFail": false,
+      "retryOnFail": true,
       "executeOnce": false,
       "alwaysOutputData": false,
-      "credentials": {
-        "openWeatherMapApi": {
-          "id": "Pbf5h4hlhAPuiCrz",
-          "name": "OpenWeatherMap account"
-        },
-        "httpQueryAuth": {
-          "id": "R0MQwvRqbl2oWilI",
-          "name": "OpenWeatherMap Auth"
-        }
-      },
       "onError": "continueErrorOutput"
     },
     {
@@ -146,13 +120,13 @@
         },
         "options": {}
       },
-      "id": "f43f66f4-1310-4de7-a779-5d7ca1e4ef2c",
+      "id": "5a567fc4-0942-48fa-8e33-21f2853b08a3",
       "name": "Formatar Message",
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
-        -1392,
-        64
+        -896,
+        96
       ]
     },
     {
@@ -165,26 +139,39 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1616,
-        64
+        -1120,
+        96
       ],
-      "id": "a424431a-0478-45b7-a586-50967e094a4d",
+      "id": "ee3fb733-9a2d-4004-a94f-f897f3274fd4",
       "name": "Telegram Trigger - FTR BR Weather Bot",
       "webhookId": "d7d3ccd1-9643-4f31-9ac0-8b1215b5bd7e",
       "credentials": {
         "telegramApi": {
-          "id": "jqVYpvfkB0fzLjYG",
-          "name": "Telegram account - FTR BR Weather Bot"
+          "id": "ata3q3vwTfGAuFuP",
+          "name": "Telegram account"
         }
       }
     },
     {
       "parameters": {
+        "jsCode": "// Acessa o primeiro item do array\nconst weatherData = $input.first().json;\n\n// Extrai os dados necessários\nconst cityName = weatherData?.name;\nconst temperature = weatherData?.main?.temp;\nconst description = weatherData?.weather?.[0]?.description;\nconst statusCode = weatherData?.cod || $input.first().json?.error?.status;\nconst country = weatherData?.sys?.country;\nconst feelsLike = weatherData?.main?.feels_like;\nconst windSpeed = weatherData?.wind?.speed;\nconst humidity = weatherData?.main?.humidity;\n\n// Arredonda temperaturas\nconst tempRounded = temperature !== null && temperature !== undefined ? Math.round(temperature) : null;\nconst feelsRounded = feelsLike !== null && feelsLike !== undefined ? Math.round(feelsLike) : null;\n\n// Emoji baseado na condição\nlet emoji = \"🌡️\";\nif (description?.includes(\"chuva\") || description?.includes(\"chuvisco\")) emoji = \"🌧️\";\nelse if (description?.includes(\"nublado\") || description?.includes(\"nuvens\")) emoji = \"☁️\";\nelse if (description?.includes(\"limpo\") || description?.includes(\"céu\")) emoji = \"☀️\";\nelse if (description?.includes(\"neve\")) emoji = \"❄️\";\nelse if (description?.includes(\"trovoada\")) emoji = \"⛈️\";\n\n// Mensagem fallback completa (substitui o Gemini quando não houver credenciais)\nconst fallbackMessage = `${emoji} Clima em ${cityName} (${country})\\n🌡️ Temperatura: ${tempRounded}°C\\n🤗 Sensação: ${feelsRounded}°C\\n💧 Humidade: ${humidity}%\\n💨 Vento: ${windSpeed} m/s\\n${emoji} ${description}`;\n\nconst error = $input.first().json?.error?.description\n\nreturn {\n  json: {\n    city: cityName,\n    country: country,\n    temperature: temperature,\n    temperatureRounded: tempRounded,\n    feelsLike: feelsLike,\n    windSpeed: windSpeed,\n    humidity: humidity,\n    description: description,\n    fallback_message: fallbackMessage,\n    statusCode: statusCode,\n    error: error\n  },\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        96
+      ],
+      "id": "2cfaabb6-5f22-4969-bc17-3b60e64c183a",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "models/gemini-2.5-flash",
+          "value": "models/gemini-3-flash-preview",
           "mode": "list",
-          "cachedResultName": "models/gemini-2.5-flash"
+          "cachedResultName": "models/gemini-3-flash-preview"
         },
         "messages": {
           "values": [
@@ -195,23 +182,22 @@
         },
         "builtInTools": {},
         "options": {
-          "systemMessage": "=Você é um assistente de clima que melhora mensagens sobre previsão do tempo.\n\nInstruções:\n1. Crie uma mensagem natural e amigável em português brasileiro\n2. Use emojis apropriados para o clima\n3. Forneça uma dica útil baseada nas condições (ex: levar guarda-chuva, usar protetor solar)\n4. Mantenha a mensagem concisa (máximo 5 linhas)\n5. NÃO cumprimente a cidade como se fosse uma pessoa (ex: \"E aí, São Paulo!\" está ERRADO)\n6. NÃO use saudações como \"E aí\", \"Olá\", \"Oi\" no início\n7. Refira-se à cidade apenas como localização (ex: \"Em São Paulo, o clima está...\")\n8. NÃO assuma o nome do usuário — você não sabe quem está lendo",
+          "systemMessage": "=Você é um assistente de clima que melhora mensagens sobre previsão do tempo.  \nInstruções: \n1. Crie uma mensagem natural e amigável em português brasileiro \n2. Use emojis apropriados para o clima \n3. Forneça uma dica útil baseada nas condições (ex: levar guarda-chuva, usar protetor solar) \n4. Mantenha a mensagem concisa (máximo 5 linhas) \n5. NÃO cumprimente a cidade como se fosse uma pessoa (ex: \"E aí, São Paulo!\" está ERRADO) \n6. NÃO use saudações como \"E aí\", \"Olá\", \"Oi\" no início \n7. Refira-se à cidade apenas como localização (ex: \"Em São Paulo, o clima está...\") \n8. NÃO assuma o nome do usuário — você não sabe quem está lendo",
           "temperature": 0.2
         }
       },
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1.1,
       "position": [
-        -496,
-        -32
+        0,
+        0
       ],
-      "id": "f18dbf76-b5aa-45c7-8b8e-a666963fad0e",
-      "name": "Message a model",
-      "retryOnFail": false,
+      "id": "7874858a-8245-418a-a988-49971d5999ed",
+      "name": "Gera Mensagens usando AI",
       "alwaysOutputData": true,
       "credentials": {
         "googlePalmApi": {
-          "id": "Awupt22cAO3MCytE",
+          "id": "OlMg0brIa0PhhSrN",
           "name": "Google Gemini(PaLM) Api account"
         }
       },
@@ -224,7 +210,7 @@
       "main": [
         [
           {
-            "node": "Message a model",
+            "node": "Gera Mensagens usando AI",
             "type": "main",
             "index": 0
           }
@@ -232,17 +218,6 @@
         [
           {
             "node": "Send Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript": {
-      "main": [
-        [
-          {
-            "node": "Check Status",
             "type": "main",
             "index": 0
           }
@@ -289,7 +264,18 @@
         ]
       ]
     },
-    "Message a model": {
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gera Mensagens usando AI": {
       "main": [
         [
           {
@@ -308,17 +294,17 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "50d92ddd-c99e-444b-971b-cf357d1e807b",
+  "versionId": "6748702f-334a-4de9-8679-c60378648104",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "16f674bf5d133e8bf1a86676719df44a64b8277f15bf5667eeb9dbc9bc95b2a1"
+    "instanceId": "9a3c1ce180d6c36adae76bbdb64a1ece777a6b1c8285f378d5482dc3c290cd8d"
   },
-  "id": "wRV5GuFhFURyph9Uj_JV6",
+  "id": "zlqX7rsUBmIaxg9c",
   "tags": []
 }

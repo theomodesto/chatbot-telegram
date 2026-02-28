@@ -2,6 +2,13 @@
 
 Um chatbot inteligente para Telegram que fornece informações meteorológicas de cidades brasileiras em tempo real, utilizando n8n, OpenWeatherMap API e Google Gemini para respostas naturais e amigáveis.
 
+## Bot Live to test
+
+- Bot: [FTR_BR_Weather_Bot](https://t.me/ftr_br_weather_bot)
+
+> [!WARNING]
+> **Importante:** Este projeto foi desenvolvido utilizando o n8n versão **2.9.4**.
+
 ## 📋 Descrição
 
 Este projeto implementa um chatbot completo no Telegram que:
@@ -15,9 +22,9 @@ Este projeto implementa um chatbot completo no Telegram que:
 
 ### Tecnologias Utilizadas
 
-- **n8n**: Plataforma de automação workflow
-- **PostgreSQL**: Banco de dados para persistência
-- **Redis**: Gerenciamento de filas e cache
+- **n8n**: Plataforma de automação workflow (versão 2.9.4)
+- **PostgreSQL**: Banco de dados para persistência (versão 16)
+- **Redis**: Gerenciamento de filas e cache (versão 6)
 - **Docker & Docker Compose**: Containerização e orquestração
 - **OpenWeatherMap API**: Dados meteorológicos
 - **Telegram Bot API**: Interface do chatbot
