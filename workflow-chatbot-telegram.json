@@ -16,13 +16,13 @@
           ]
         }
       },
-      "id": "4f962282-7dbf-4ac5-8517-57b25fd4101a",
+      "id": "b34b4bad-c30f-4ca3-8f44-b4abb67d1c47",
       "name": "Check Status",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
         -224,
-        96
+        48
       ]
     },
     {
@@ -31,18 +31,18 @@
         "text": "={{ $json?.content?.parts[0]?.text || $('Code in JavaScript').item.json.fallback_message }}",
         "additionalFields": {}
       },
-      "id": "50c10adf-128c-4317-b2e1-5445370bcccb",
+      "id": "5faaef4e-ad55-4551-90bb-c63f29e25563",
       "name": "Send Weather",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1,
       "position": [
         352,
-        0
+        -48
       ],
       "webhookId": "421515f8-0c94-4d57-a963-582ef93644e8",
       "credentials": {
         "telegramApi": {
-          "id": "ata3q3vwTfGAuFuP",
+          "id": "ajAbbN4uQb9XmANJ",
           "name": "Telegram account"
         }
       }
@@ -53,18 +53,18 @@
         "text": "❌ Cidade não encontrada. Use o formato Cidade,UF (ex.: São Paulo,SP).",
         "additionalFields": {}
       },
-      "id": "f1a95835-b91b-4183-8344-6accd24cd9d5",
+      "id": "a8291896-6ad6-425b-a703-2b733b4926af",
       "name": "Send Error",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1,
       "position": [
         64,
-        192
+        144
       ],
       "webhookId": "08b5d37d-446e-4d27-a89c-2080da436eee",
       "credentials": {
         "telegramApi": {
-          "id": "ata3q3vwTfGAuFuP",
+          "id": "ajAbbN4uQb9XmANJ",
           "name": "Telegram account"
         }
       }
@@ -99,9 +99,9 @@
       "typeVersion": 4.4,
       "position": [
         -672,
-        96
+        48
       ],
-      "id": "645e1783-443b-471d-9884-3520fdcbb29a",
+      "id": "aa24373f-3757-4592-9e46-22f45385515e",
       "name": "OpenWeatherMap",
       "retryOnFail": true,
       "executeOnce": false,
@@ -120,13 +120,13 @@
         },
         "options": {}
       },
-      "id": "5a567fc4-0942-48fa-8e33-21f2853b08a3",
+      "id": "0722585f-4c80-4a53-b78c-e91a34a074be",
       "name": "Formatar Message",
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
         -896,
-        96
+        48
       ]
     },
     {
@@ -140,14 +140,14 @@
       "typeVersion": 1.2,
       "position": [
         -1120,
-        96
+        48
       ],
-      "id": "ee3fb733-9a2d-4004-a94f-f897f3274fd4",
+      "id": "a8b57511-19f7-4283-9f32-c832b21d584e",
       "name": "Telegram Trigger - FTR BR Weather Bot",
       "webhookId": "d7d3ccd1-9643-4f31-9ac0-8b1215b5bd7e",
       "credentials": {
         "telegramApi": {
-          "id": "ata3q3vwTfGAuFuP",
+          "id": "ajAbbN4uQb9XmANJ",
           "name": "Telegram account"
         }
       }
@@ -160,18 +160,18 @@
       "typeVersion": 2,
       "position": [
         -448,
-        96
+        48
       ],
-      "id": "2cfaabb6-5f22-4969-bc17-3b60e64c183a",
+      "id": "a3b30e90-d3b2-4329-9673-a2f3c8dc1097",
       "name": "Code in JavaScript"
     },
     {
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "models/gemini-3-flash-preview",
+          "value": "models/gemini-2.0-flash",
           "mode": "list",
-          "cachedResultName": "models/gemini-3-flash-preview"
+          "cachedResultName": "models/gemini-2.0-flash"
         },
         "messages": {
           "values": [
@@ -190,14 +190,14 @@
       "typeVersion": 1.1,
       "position": [
         0,
-        0
+        -48
       ],
-      "id": "7874858a-8245-418a-a988-49971d5999ed",
+      "id": "f4587345-75dc-45a0-a797-1773cd6308f9",
       "name": "Gera Mensagens usando AI",
       "alwaysOutputData": true,
       "credentials": {
         "googlePalmApi": {
-          "id": "OlMg0brIa0PhhSrN",
+          "id": "bR22cqW0eNnTtKoD",
           "name": "Google Gemini(PaLM) Api account"
         }
       },
@@ -294,17 +294,17 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "6748702f-334a-4de9-8679-c60378648104",
+  "versionId": "9dba73e6-26cf-413e-bcf2-26506394fbb2",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "9a3c1ce180d6c36adae76bbdb64a1ece777a6b1c8285f378d5482dc3c290cd8d"
+    "instanceId": "425a2bb1f919514729d7c9950b052619d479a4fe5214430d1efd815b8c2e08a2"
   },
-  "id": "zlqX7rsUBmIaxg9c",
+  "id": "jS6bwXzLRzV8CEv0Yk0tn",
   "tags": []
 }
